@@ -1,0 +1,33 @@
+@startuml
+title Диаграмма контекста новых сервисов «Умный дом»
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Собственник", "Владелец жилья")
+Person(admin, "Администратор умного дома", "Администратор управляющей компании партнера")
+System(SmartHomeSystemUI, "Витрина сервисов для собственников", "Мобильные приложения для собственников")
+System(TenantCoreApp, "tenant-core-app", "Приложение для предоставления услуг собственникам")
+System(API, "Единый API-management шлюз", "Взаимодействие с внешними системами")
+
+
+System_Ext(GovBio, "ГИС ЕБС", "Единая Государственная система учета биометрических данных")
+System_Ext(SmartHomeSystem, "Интеллектуальный домофон", "Партнерская система по управлению домофонами в домах")
+System_Ext(SmartParkingSystem, "Интеллектуальный шлагбаум", "Партнерская система по управлению шлагбаумами")
+System_Ext(PaymentGate, "Платёжная система", "Провайдер онлайн-платежей")
+
+Rel(user, SmartHomeSystemUI, "Обращается к сервисам Умного дома")
+Rel(admin, SmartHomeSystem, "Администрирует систему")
+Rel(admin, SmartParkingSystem, "Администрирует систему")
+
+Rel(SmartHomeSystemUI, TenantCoreApp, "Взаимодействие с каталогом сервисов")
+Rel(TenantCoreApp, API, "Взаимодействие с внешими сервисами")
+Rel(GovBio, SmartHomeSystem, "Взаимодействие с аутентификаций по биометрии")
+
+Rel(API, SmartHomeSystem, "Взаимодействие с сервисами интеллектуального домофона")
+Rel(API, SmartParkingSystem, "Взаимодействие с сервисами интеллектуального шлагбаума")
+Rel(API, GovBio, "Согласие на использование биометрических данных")
+Rel(API, PaymentGate, "Обработка платежей")
+
+@enduml
